@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.o  -o NewTicketSystem 
