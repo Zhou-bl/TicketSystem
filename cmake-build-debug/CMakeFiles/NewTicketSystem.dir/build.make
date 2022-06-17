@@ -57,27 +57,27 @@ include CMakeFiles/NewTicketSystem.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/NewTicketSystem.dir/flags.make
 
-CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.o: CMakeFiles/NewTicketSystem.dir/flags.make
-CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.o: ../src/test/compare.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/d/周秉霖/coding/NewTicketSystem/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.o -c /mnt/d/周秉霖/coding/NewTicketSystem/src/test/compare.cpp
+CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.o: CMakeFiles/NewTicketSystem.dir/flags.make
+CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.o: ../src/test/test.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/d/周秉霖/coding/NewTicketSystem/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.o -c /mnt/d/周秉霖/coding/NewTicketSystem/src/test/test.cpp
 
-CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/d/周秉霖/coding/NewTicketSystem/src/test/compare.cpp > CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.i
+CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/d/周秉霖/coding/NewTicketSystem/src/test/test.cpp > CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.i
 
-CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/d/周秉霖/coding/NewTicketSystem/src/test/compare.cpp -o CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.s
+CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/d/周秉霖/coding/NewTicketSystem/src/test/test.cpp -o CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.s
 
 # Object files for target NewTicketSystem
 NewTicketSystem_OBJECTS = \
-"CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.o"
+"CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.o"
 
 # External object files for target NewTicketSystem
 NewTicketSystem_EXTERNAL_OBJECTS =
 
-NewTicketSystem: CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.o
+NewTicketSystem: CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.o
 NewTicketSystem: CMakeFiles/NewTicketSystem.dir/build.make
 NewTicketSystem: CMakeFiles/NewTicketSystem.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/d/周秉霖/coding/NewTicketSystem/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable NewTicketSystem"

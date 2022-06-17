@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.o"
+  "CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.o"
   "NewTicketSystem"
   "NewTicketSystem.pdb"
 )

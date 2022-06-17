@@ -123,32 +123,32 @@ NewTicketSystem/fast:
 	$(MAKE) -f CMakeFiles/NewTicketSystem.dir/build.make CMakeFiles/NewTicketSystem.dir/build
 .PHONY : NewTicketSystem/fast
 
-src/test/compare.o: src/test/compare.cpp.o
+src/test/test.o: src/test/test.cpp.o
 
-.PHONY : src/test/compare.o
+.PHONY : src/test/test.o
 
 # target to build an object file
-src/test/compare.cpp.o:
-	$(MAKE) -f CMakeFiles/NewTicketSystem.dir/build.make CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.o
-.PHONY : src/test/compare.cpp.o
+src/test/test.cpp.o:
+	$(MAKE) -f CMakeFiles/NewTicketSystem.dir/build.make CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.o
+.PHONY : src/test/test.cpp.o
 
-src/test/compare.i: src/test/compare.cpp.i
+src/test/test.i: src/test/test.cpp.i
 
-.PHONY : src/test/compare.i
+.PHONY : src/test/test.i
 
 # target to preprocess a source file
-src/test/compare.cpp.i:
-	$(MAKE) -f CMakeFiles/NewTicketSystem.dir/build.make CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.i
-.PHONY : src/test/compare.cpp.i
+src/test/test.cpp.i:
+	$(MAKE) -f CMakeFiles/NewTicketSystem.dir/build.make CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.i
+.PHONY : src/test/test.cpp.i
 
-src/test/compare.s: src/test/compare.cpp.s
+src/test/test.s: src/test/test.cpp.s
 
-.PHONY : src/test/compare.s
+.PHONY : src/test/test.s
 
 # target to generate assembly for a file
-src/test/compare.cpp.s:
-	$(MAKE) -f CMakeFiles/NewTicketSystem.dir/build.make CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.s
-.PHONY : src/test/compare.cpp.s
+src/test/test.cpp.s:
+	$(MAKE) -f CMakeFiles/NewTicketSystem.dir/build.make CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.s
+.PHONY : src/test/test.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... NewTicketSystem"
-	@echo "... src/test/compare.o"
-	@echo "... src/test/compare.i"
-	@echo "... src/test/compare.s"
+	@echo "... src/test/test.o"
+	@echo "... src/test/test.i"
+	@echo "... src/test/test.s"
 .PHONY : help
 
 

@@ -6,4 +6,4 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(src/bpt)
 
 add_executable(NewTicketSystem
-        src/test/compare.cpp)
+        src/test/test.cpp)

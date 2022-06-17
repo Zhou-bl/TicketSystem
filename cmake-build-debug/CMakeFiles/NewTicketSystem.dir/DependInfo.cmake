@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/mnt/d/周秉霖/coding/NewTicketSystem/src/test/compare.cpp" "/mnt/d/周秉霖/coding/NewTicketSystem/cmake-build-debug/CMakeFiles/NewTicketSystem.dir/src/test/compare.cpp.o"
+  "/mnt/d/周秉霖/coding/NewTicketSystem/src/test/test.cpp" "/mnt/d/周秉霖/coding/NewTicketSystem/cmake-build-debug/CMakeFiles/NewTicketSystem.dir/src/test/test.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

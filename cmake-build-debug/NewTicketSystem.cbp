@@ -84,7 +84,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/mnt/d/周秉霖/coding/NewTicketSystem/src/test/compare.cpp">
+		<Unit filename="/mnt/d/周秉霖/coding/NewTicketSystem/src/test/test.cpp">
 			<Option target="NewTicketSystem"/>
 		</Unit>
 		<Unit filename="/mnt/d/周秉霖/coding/NewTicketSystem/CMakeLists.txt">

@@ -12,24 +12,145 @@
 #include <cstring>
 #include <cmath>
 #include <fstream>
+#include <type_traits>
 #include <vector> //临时使用
 #include "file.hpp"
+#include "tools.h"
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::fstream;
 using std::vector;
+using std::is_same;
 
 namespace B_PLUS_TREE {
 
-    const int MAX_KEY = 68;
-    const int MAX_CHILDREN = 150;
+    const int MAX_CHILDREN = 50;
     const int MIN_CHILDREN = MAX_CHILDREN >> 1;
 
     /*
      * T类型需要:默认构造函数T(),[operator=],[operator==],[operator<](随便写,只要有就行);
      */
+
+    struct FindOrders {
+        str<22> uid;
+        int timestamp;
+
+        FindOrders() : uid("~~~"), timestamp(114514) {};
+
+        FindOrders(const string &uid, const int &timestamp) : uid(uid), timestamp(timestamp) {};
+
+        FindOrders(const FindOrders &fs) : uid(fs.uid), timestamp(fs.timestamp) {};
+
+        friend bool operator<(const FindOrders &l, const FindOrders &r) {
+            if (r.uid == str<22>("~~~") && r.timestamp == 114514)return false;
+            if (l.uid == str<22>("~~~") && l.timestamp == 114514)return true;
+            if (l.uid == r.uid)return l.timestamp < r.timestamp;
+            return l.uid < r.uid;
+        }
+
+        friend bool operator==(const FindOrders &l, const FindOrders &r) {
+            return l.uid == r.uid && l.timestamp == r.timestamp;
+        }
+    };
+
+    struct FindTickets {
+        DATE d;
+        str<21> trainID;
+
+        FindTickets() : d("99:99"), trainID("~~~") {};
+
+        FindTickets(const DATE &d, const string &trainID) : d(d), trainID(trainID) {};
+
+        FindTickets(const FindTickets &fs) : d(fs.d), trainID(fs.trainID) {};
+
+        friend bool operator<(const FindTickets &l, const FindTickets &r) {
+            if (l.d == "99:99" && l.trainID == str<21>("~~~")) return true;
+            if (r.d == "99:99" && l.trainID == str<21>("~~~")) return false;
+            if (l.trainID == r.trainID) {
+                return l.d < r.d;
+            }
+            return l.trainID < r.trainID;
+        }
+
+        friend bool operator==(const FindTickets &l, const FindTickets &r) { return l.d == r.d && l.trainID == r.trainID; }
+    };
+
+    struct FindStations {
+        str<21> trainID;
+        str<32> stationID;
+
+        FindStations() : stationID(""), trainID("") {};
+
+        FindStations(const FindStations &fs) : stationID(fs.stationID), trainID(fs.trainID) {};
+
+        FindStations(const string &l, const string &r) : stationID(l), trainID(r) {};
+
+        friend bool operator<(const FindStations &l, const FindStations &r) {
+            if (l.stationID == r.stationID) return l.trainID < r.trainID;
+            return l.stationID < r.stationID;
+        }
+
+        friend bool operator==(const FindStations &l, const FindStations &r) {
+            return l.stationID == r.stationID && l.trainID == r.trainID;
+        }
+    };
+
+    struct FindPD {
+        string trainID;
+        DATE dptDate;
+
+        FindPD():trainID(""), dptDate("99:99"){}
+
+        bool operator<(const FindPD &rhs)const{
+            if(trainID == "" && dptDate == "99:99")return true;
+            if(trainID == rhs.trainID)
+                return dptDate < rhs.dptDate;
+            return trainID < rhs.trainID;
+        }
+        bool operator==(const FindPD &rhs)const{
+            return trainID == rhs.trainID && dptDate == rhs.dptDate;
+        }
+        bool operator>(const FindPD &rhs)const{
+            return !(*this < rhs) && !(*this == rhs);
+        }
+        bool operator<=(const FindPD &rhs)const{
+            return !(*this > rhs);
+        }
+        bool operator>=(const FindPD &rhs)const{
+            return !(*this < rhs);
+        }
+    };
+
+    struct FindPending{
+        FindPD PD;
+        int timestamp;
+
+        FindPending():PD(),timestamp(0){}
+
+        FindPending(const FindPD &tmpPD, const int tmpT){
+            PD = tmpPD;
+            timestamp = tmpT;
+        }
+
+        FindPending &operator=(const FindPending &rhs){
+            if(this == &rhs)
+                return *this;
+            PD = rhs.PD;
+            timestamp = rhs.timestamp;
+            return *this;
+        }
+
+        bool operator<(const FindPending &rhs)const{
+            if(PD == rhs.PD)
+                return timestamp < rhs.timestamp;
+            return PD < rhs.PD;
+        }
+        bool operator==(const FindPending &rhs)const{
+            return PD == rhs.PD && timestamp == rhs.timestamp;
+        }
+    };
 
     template<typename KeyType, typename ValueType>
     struct KeyValue {//键值对
@@ -790,6 +911,205 @@ namespace B_PLUS_TREE {
         void Update(const KeyType &aimKey, const ValueType &preValue, const ValueType &newValue){
             Delete(aimKey, preValue);
             Insert(aimKey, newValue);
+        }
+
+        void FindOrders(const string &aimUid, vector<ValueType> &res){
+            if(!std::is_same<KeyType, struct FindOrders>()){
+                cout << "Type FindOrders Wrong!" << endl;
+                return;
+            }
+            Node<KeyType, ValueType> tmp;
+            tree.read(tmp, root_index);
+            while(!tmp.is_leaf){
+                int l = 0, r = tmp.num - 1, mid;
+                struct FindOrders midKey;
+                while(l < r){
+                    mid = l + r >> 1;
+                    midKey = tmp.children[mid].key;
+                    if(aimUid > midKey.uid){
+                        l = mid + 1;
+                    }
+                    else{
+                        r = mid;
+                    }
+                }
+                if(l){
+                    midKey = tmp.children[l].key;
+                    if(midKey.uid >= aimUid) --l;
+                }
+                tree.read(tmp, tmp.chIndex[l]);
+            }
+            /*
+            KeyType tmpString;
+            bool flag = 0;
+            while(true){
+                for(int i = 0; i < tmp.num; ++i){
+                    tmpString = tmp.children[i].key;
+                    if(tmpString == aimUid){
+                        res.push_back(tmp.children[i].value);
+                    }
+                    else if(tmpString > aimKey){
+                        flag = 1;
+                        break;
+                    }
+                }
+                if(tmp.next == -1 || flag) break;
+                tree.read(tmp, tmp.next);
+            }
+             */
+            struct FindOrders tmpKey;
+            bool flag = 0;
+            while(true){
+                for(int i = 0; i < tmp.num; ++i){
+                    tmpKey = tmp.children[i].key;
+                    if(tmpKey.uid == aimUid){
+                        res.push_back(tmp.children[i].value);
+                    }
+                    else if(tmpKey.uid > aimUid){
+                        flag = 1;
+                        break;
+                    }
+                }
+                if(tmp.next == -1 || flag) break;
+                tree.read(tmp, tmp.next);
+            }
+        }
+
+        void FindTickets(const string &aimID, vector<ValueType> &res){
+            if(!std::is_same<KeyType, struct FindTickets>()){
+                cout << "Type FindTickets Wrong!" << endl;
+                return;
+            }
+
+            Node<KeyType, ValueType> tmp;
+            tree.read(tmp, root_index);
+            while(!tmp.is_leaf){
+                int l = 0, r = tmp.num - 1, mid;
+                struct FindTickets midKey;
+                while(l < r){
+                    mid = l + r >> 1;
+                    midKey = tmp.children[mid].key;
+                    if(aimID > midKey.trainID){
+                        l = mid + 1;
+                    }
+                    else{
+                        r = mid;
+                    }
+                }
+                if(l){
+                    midKey = tmp.children[l].key;
+                    if(midKey.trainID >= aimID) --l;
+                }
+                tree.read(tmp, tmp.chIndex[l]);
+            }
+            struct FindTickets tmpKey;
+            bool flag = 0;
+            while(true){
+                for(int i = 0; i < tmp.num; ++i){
+                    tmpKey = tmp.children[i].key;
+                    if(tmpKey.trainID == aimID){
+                        res.push_back(tmp.children[i].value);
+                    }
+                    else if(tmpKey.trainID > aimID){
+                        flag = 1;
+                        break;
+                    }
+                }
+                if(tmp.next == -1 || flag) break;
+                tree.read(tmp, tmp.next);
+            }
+        }
+
+        void FindStations(const string &aimStation, vector<ValueType> &res){
+            if(!std::is_same<KeyType, struct FindStations>()){
+                cout << "Type FindStations Wrong!" << endl;
+                return;
+            }
+
+            Node<KeyType, ValueType> tmp;
+            tree.read(tmp, root_index);
+            while(!tmp.is_leaf){
+                int l = 0, r = tmp.num - 1, mid;
+                struct FindStations midKey;
+                while(l < r){
+                    mid = l + r >> 1;
+                    midKey = tmp.children[mid].key;
+                    if(aimStation > midKey.stationID){
+                        l = mid + 1;
+                    }
+                    else{
+                        r = mid;
+                    }
+                }
+                if(l){
+                    midKey = tmp.children[l].key;
+                    if(midKey.stationID >= aimStation) --l;
+                }
+                tree.read(tmp, tmp.chIndex[l]);
+            }
+
+            struct FindStations tmpKey;
+            bool flag = 0;
+            while(true){
+                for(int i = 0; i < tmp.num; ++i){
+                    tmpKey = tmp.children[i].key;
+                    if(tmpKey.stationID== aimStation){
+                        res.push_back(tmp.children[i].value);
+                    }
+                    else if(tmpKey.stationID > aimStation){
+                        flag = 1;
+                        break;
+                    }
+                }
+                if(tmp.next == -1 || flag) break;
+                tree.read(tmp, tmp.next);
+            }
+        }
+
+        void FindPending(const FindPD &aimPD, vector<ValueType> &res){
+            if(!std::is_same<KeyType, struct FindPending>()){
+                cout << "Type FindPD Wrong!" << endl;
+                return;
+            }
+
+            Node<KeyType, ValueType> tmp;
+            tree.read(tmp, root_index);
+            while(!tmp.is_leaf){
+                int l = 0, r = tmp.num - 1, mid;
+                struct FindPending midKey;
+                while(l < r){
+                    mid = l + r >> 1;
+                    midKey = tmp.children[mid].key;
+                    if(aimPD > midKey.PD){
+                        l = mid + 1;
+                    }
+                    else{
+                        r = mid;
+                    }
+                }
+                if(l){
+                    midKey = tmp.children[l].key;
+                    if(midKey.PD >= aimPD) --l;
+                }
+                tree.read(tmp, tmp.chIndex[l]);
+            }
+
+            struct FindPending tmpKey;
+            bool flag = 0;
+            while(true){
+                for(int i = 0; i < tmp.num; ++i){
+                    tmpKey = tmp.children[i].key;
+                    if(tmpKey.PD == aimPD){
+                        res.push_back(tmp.children[i].value);
+                    }
+                    else if(tmpKey.PD > aimPD){
+                        flag = 1;
+                        break;
+                    }
+                }
+                if(tmp.next == -1 || flag) break;
+                tree.read(tmp, tmp.next);
+            }
         }
 
 #ifdef _DEBUG
