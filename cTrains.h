@@ -520,6 +520,7 @@ public:
                         t_ticket = t_tickets[{t_dpt, string(t_it.trainID)}];
                     else {
                         tickets.Find({t_dpt, string(t_it.trainID)}, tmpSeats);
+                        if(tmpSeats.empty())tmpSeats.push_back(seat());
                         t_tickets[{t_dpt, string(t_it.trainID)}] = t_ticket =
                                 tmpSeats[0];
                         tmpSeats.clear();

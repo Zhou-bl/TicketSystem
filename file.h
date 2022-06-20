@@ -29,7 +29,7 @@ private:
 public:
     MemoryRiver() = default;
 
-    MemoryRiver(const string& file_name) : file_name( "database/" + file_name) { initialise();}
+    MemoryRiver(const string& file_name) : file_name( file_name) { initialise();}
 
     void clear(){
         file.open(file_name, std::ofstream::out);
