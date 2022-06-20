@@ -16,18 +16,45 @@ using std::fstream;
 using std::string;
 using sjtu::linked_hashmap;
 
+template<class T>
+struct pool_node{
+    T data;
+    bool isUpdate;
+    pool_node():data(), isUpdate(0){}
+
+    pool_node(const T &tmpdata, bool tmpflag){
+        data = tmpdata;
+        isUpdate = tmpflag;
+    }
+};
+
 template<class T, int info_len = 2>
 class MemoryRiver {//一个MemoryRiver 对应一个文件
 private:
     /* your code here */
-    const int MAX_POOL = 100;
+    const int MAX_POOL = 1000;
     fstream file;
     string file_name;
     int sizeofT = sizeof(T);
-    linked_hashmap<int, T> pool;
+    linked_hashmap<int, pool_node<T>> pool;
 
 public:
     MemoryRiver() = default;
+
+    ~MemoryRiver(){
+        for(auto it = pool.begin(); it != pool.end(); ++it){
+            if(it->second.isUpdate){
+                inner_update(it->first, it->second.data);
+            }
+        }
+    }
+
+    void inner_update(int index, T &t){
+        file.open(file_name);
+        file.seekp(index);
+        file.write(reinterpret_cast<char*>(&t), sizeofT);
+        file.close();
+    }
 
     MemoryRiver(const string& file_name) : file_name( file_name) { initialise();}
 
@@ -42,6 +69,11 @@ public:
     }
 
     void initialise(string FN = "") {
+        for(auto it = pool.begin(); it != pool.end(); ++it){
+            if(it->second.isUpdate){
+                inner_update(it->first, it->second.data);
+            }
+        }
         pool.clear();
         if (FN != "") file_name = FN;
         file.open(file_name, std::fstream::in | std::fstream::out);
@@ -98,30 +130,32 @@ public:
         file.close();
         write_info(++num_T, 1);
         write_info(del_head, 2);//更新 del_head 的值
-        if(pool.size() >= MAX_POOL){
+        if(pool.size() >= MAX_POOL){//内存池已满
+            if(pool.begin()->second.isUpdate){
+                inner_update(pool.begin()->first, pool.begin()->second.data);
+            }
             pool.erase(pool.begin());
         }
-        pool[index] = t;
+        pool[index] = pool_node<T>(t, 0);
         return index;
     }
 
     //用t的值更新位置索引index对应的对象，保证调用的index都是由write函数产生
     void update(T &t, const int index) {
         /* your code here */
-        file.open(file_name);
-        file.seekp(index);
-        file.write(reinterpret_cast<char*>(&t), sizeofT);
-        file.close();
-        if(pool.count(index)){
-            pool[index] = t;
+        if(pool.count(index)){//如果在内存池中有,则只更新内存池
+            pool[index] = pool_node<T>(t, 1);
+        }
+        else{
+            inner_update(index, t);//没有则需要更新文件内容
         }
     }
 
     //读出位置索引index对应的T对象的值并赋值给t，保证调用的index都是由write函数产生
     void read(T &t, const int index) {
         /* your code here */
-        if(pool.find(index) != pool.end()){
-            t = pool[index];
+        if(pool.find(index) != pool.end()){//内存池中有
+            t = pool[index].data;
             return;
         }
         file.open(file_name);
@@ -129,14 +163,12 @@ public:
         file.read(reinterpret_cast<char*>(&t), sizeofT);
         file.close();
         if(pool.size() >= MAX_POOL){
+            if(pool.begin()->second.isUpdate){
+                inner_update(pool.begin()->first, pool.begin()->second.data);
+            }
             pool.erase(pool.begin());
         }
-        else{
-            if(pool.find(index) != pool.end()){
-                pool.erase(pool.find(index));
-            }
-        }
-        pool[index] = t;
+        pool[index] = pool_node<T>(t, 0);
     }
 
     //删除位置索引index对应的对象(不涉及空间回收时，可忽略此函数)，保证调用的index都是由write函数产生

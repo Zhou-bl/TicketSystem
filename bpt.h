@@ -28,6 +28,7 @@ using std::is_same;
 namespace B_PLUS_TREE {
 
     const int MAX_CHILDREN = 75;
+    const int MAX_CHILDREN2 = 60;
     const int MIN_CHILDREN = MAX_CHILDREN >> 1;
 
     /*
@@ -107,7 +108,6 @@ namespace B_PLUS_TREE {
             num = 0;
             next = pre = fa = -1;
         }
-
     };
 
     template<typename KeyType, typename ValueType>
