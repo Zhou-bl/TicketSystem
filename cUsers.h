@@ -46,7 +46,7 @@ std::unordered_map<string, int> loginUser;
 
 class UserManager {
 public:
-    B_PLUS_TREE::BPlusTree<str<21>,User, 32768 / sizeof(User)> users;
+    B_PLUS_TREE::BPlusTree< str<21>,User, std::max((long unsigned int)5, 32742 / (sizeof(str<21>) + sizeof(User) + 4) )> users;
 
 public:
     UserManager() : users{"userdata"} {};

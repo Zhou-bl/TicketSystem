@@ -264,14 +264,14 @@ struct pending {
 //};
 
 class TrainManager {
-    B_PLUS_TREE::BPlusTree<str<21>, Train, 32768 / sizeof(Train) > trains;
-    B_PLUS_TREE::BPlusTree<str<21>, trainDate, 32768 / sizeof(trainDate) > dates;
-    B_PLUS_TREE::BPlusTree<FindStations, station, 32768 / sizeof(station) > station2;
+    B_PLUS_TREE::BPlusTree<str<21>, Train, std::max((long unsigned int)5, 32742 / (sizeof(str<21>) + sizeof(Train) + 4) ) > trains;
+    B_PLUS_TREE::BPlusTree<str<21>, trainDate, std::max((long unsigned int)5, 32742 / (sizeof(str<21>) + sizeof(trainDate) + 4) )> dates;
+    B_PLUS_TREE::BPlusTree<FindStations, station, std::max((long unsigned int)5, 32742 / (sizeof(FindStations) + sizeof(station) + 4) )> station2;
 //    B_PLUS_TREE::BPlusTree<BPlusTree<string, station> station1;
-    B_PLUS_TREE::BPlusTree<FindTickets, seat, 32768 / sizeof(seat) > tickets;
+    B_PLUS_TREE::BPlusTree<FindTickets, seat, std::max((long unsigned int)5, 32742 / (sizeof(FindTickets) + sizeof(seat) + 4) ) > tickets;
 //    B_PLUS_TREE::BPlusTree<string, order> orders;
-    B_PLUS_TREE::BPlusTree<FindOrders, order, 32768 / sizeof(order) > orders;
-    B_PLUS_TREE::BPlusTree<FindPending, pending, 32768 / sizeof(pending)> pendings;
+    B_PLUS_TREE::BPlusTree<FindOrders, order, std::max((long unsigned int)5, 32742 / (sizeof(FindOrders) + sizeof(order) + 4) ) > orders;
+    B_PLUS_TREE::BPlusTree<FindPending, pending, std::max((long unsigned int)5, 32742 / (sizeof(FindPending) + sizeof(pending) + 4) ) > pendings;
 //    B_PLUS_TREE::BPlusTree<FindPD, pending> pendings2;
 public:
     TrainManager() : trains{"traindata"}, dates{"datedata"}, station2{"station2data"}, tickets{"ticketdata"},
