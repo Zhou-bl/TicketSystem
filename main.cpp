@@ -5,8 +5,8 @@
 CommandParser ticketSystem;
 
 int main() {
-    freopen("testdata/basic_3/5.in", "r", stdin);
-    freopen("ans.txt", "w", stdout);
+    //freopen("testdata/basic_3/5.in", "r", stdin);
+    //freopen("ans.txt", "w", stdout);
     std::string commandLine, result;
     while (std::getline(std::cin, commandLine)) {
         result = ticketSystem.run(commandLine);
