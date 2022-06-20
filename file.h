@@ -32,7 +32,7 @@ template<class T, int info_len = 2>
 class MemoryRiver {//一个MemoryRiver 对应一个文件
 private:
     /* your code here */
-    const int MAX_POOL = 75;
+    const int MAX_POOL = 600;
     fstream file;
     string file_name;
     int sizeofT = sizeof(T);
